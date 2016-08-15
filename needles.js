@@ -108,7 +108,7 @@ function simulate() {
 
     console.log(k);
 
-    document.getElementById("result").innerHTML = "k = " + k;
+    document.getElementById("result").innerHTML = "N = " + k;
 }
 
 document.getElementById("distance").value = lines.distance;
