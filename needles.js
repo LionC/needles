@@ -15,6 +15,11 @@ var area = {
     height: 4000
 };
 
+var canvas = document.getElementById("canvas");
+canvas.width = area.width;
+canvas.height = area.height;
+var ctx = canvas.getContext("2d");
+
 function getValue(id) {
     return document.getElementById(id).value;
 }
@@ -104,11 +109,22 @@ function simulate() {
 
     throwNeedles();
 
+    drawNeedles();
+
     var k = findCrossings();
 
     console.log(k);
 
     document.getElementById("result").innerHTML = "N = " + k;
+}
+
+function drawNeedles() {
+    curNeedles.forEach(function(needle) {
+        ctx.moveTo(needle.first.x, needle.first.y);
+        ctx.lineTo(needle.second.x, needle.second.y);
+    });
+
+    ctx.stroke();
 }
 
 document.getElementById("distance").value = lines.distance;
