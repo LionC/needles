@@ -1,23 +1,23 @@
 var needles = {
-    length: 3,
-    amount: 1000000
+    length: 50,
+    amount: 200
 };
 
 var curNeedles = [];
 
 var lines = {
-    distance: 5,
+    distance: 200,
     firstOffset: 0
 };
 
 var area = {
-    width: 2000,
-    height: 4000
+    width: 700,
+    height: 1400
 };
 
 var canvas = document.getElementById("canvas");
-canvas.width = canvas.style.width;
-canvas.height = canvas.width * (area.height / area.width);
+canvas.width = area.width;
+canvas.height = area.height;
 var ctx = canvas.getContext("2d");
 
 function getValue(id) {
@@ -93,11 +93,25 @@ function findCrossings() {
         for(var a = lines.firstOffset; a <= area.height; a += lines.distance) {
             if(!(needle.first.y > a && needle.second.y > a) && !(needle.first.y < a && needle.second.y < a)) {
                 count++;
+                drawCrossingPoint(getCrossingPoint(needle, a));
             }
         }
     });
 
     return count;
+}
+
+function getCrossingPoint(needle, height) {
+    //y = ax + b
+    var a = (needle.first.y - needle.second.y) / (needle.first.x - needle.second.x);
+    var b = needle.first.y - a * needle.first.x;
+
+    var x = (height - b) / a;
+
+    return {
+        x: x,
+        y: height
+    };
 }
 
 function simulate() {
@@ -109,6 +123,8 @@ function simulate() {
 
     throwNeedles();
 
+    clearCanvas();
+    drawLines();
     drawNeedles();
 
     var k = findCrossings();
@@ -118,11 +134,46 @@ function simulate() {
     document.getElementById("result").innerHTML = "N = " + k;
 }
 
+function clearCanvas() {
+    ctx.clearRect(0, 0, area.width, area.height);
+    ctx.beginPath();
+}
+
+function drawLines() {
+    ctx.beginPath();
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#555555";
+
+    for(var a = lines.firstOffset; a <= area.height; a += lines.distance) {
+        ctx.moveTo(0, a);
+        ctx.lineTo(area.width, a);
+    }
+
+    ctx.stroke();
+}
+
 function drawNeedles() {
+    ctx.beginPath();
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#000000";
+
     curNeedles.forEach(function(needle) {
         ctx.moveTo(needle.first.x, needle.first.y);
         ctx.lineTo(needle.second.x, needle.second.y);
     });
+
+    ctx.stroke();
+}
+
+function drawCrossingPoint(point) {
+    ctx.beginPath();
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#AA0000";
+
+    ctx.arc(point.x, point.y, 8, 0, 2*Math.PI);
 
     ctx.stroke();
 }
