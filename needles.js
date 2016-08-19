@@ -93,7 +93,9 @@ function findCrossings() {
         for(var a = lines.firstOffset; a <= area.height; a += lines.distance) {
             if(!(needle.first.y > a && needle.second.y > a) && !(needle.first.y < a && needle.second.y < a)) {
                 count++;
-                drawCrossingPoint(getCrossingPoint(needle, a));
+
+                if(!isMobile())
+                    drawCrossingPoint(getCrossingPoint(needle, a));
             }
         }
     });
@@ -123,9 +125,11 @@ function simulate() {
 
     throwNeedles();
 
-    clearCanvas();
-    drawLines();
-    drawNeedles();
+    if(!isMobile()) {
+        clearCanvas();
+        drawLines();
+        drawNeedles();
+    }
 
     var k = findCrossings();
 
@@ -176,6 +180,10 @@ function drawCrossingPoint(point) {
     ctx.arc(point.x, point.y, 8, 0, 2*Math.PI);
 
     ctx.stroke();
+}
+
+function isMobile() {
+    return window.matchMedia( "(max-width: 767px)" ).matches;
 }
 
 document.getElementById("distance").value = lines.distance;
