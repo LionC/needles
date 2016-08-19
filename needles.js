@@ -16,8 +16,8 @@ var area = {
 };
 
 var canvas = document.getElementById("canvas");
-canvas.width = area.width;
-canvas.height = area.height;
+canvas.width = canvas.style.width;
+canvas.height = canvas.width * (area.height / area.width);
 var ctx = canvas.getContext("2d");
 
 function getValue(id) {

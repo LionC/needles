@@ -10,9 +10,13 @@
 
 <body>
   <style>
-    .main-wrapper {
+    .main-wrapper, canvas {
       width: 700px;
       margin: auto;
+    }
+
+    canvas {
+      border: 1px solid black;
     }
 
     @media screen and (max-width: 767px) {
@@ -48,7 +52,7 @@
         </div>
       </div>
     </div>
-    <canvas id="canvas" width="200" height="200" style="border: 1px solid black;"></canvas>
+    <canvas id="canvas"></canvas>
   </div>
 
 
